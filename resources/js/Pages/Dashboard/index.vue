@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>This is Dashboard</p>
+        <p>This is Dashboard, welcome {{name}}</p>
     </div>
 </template>
 

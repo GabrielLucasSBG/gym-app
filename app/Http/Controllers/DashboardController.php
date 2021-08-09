@@ -13,6 +13,6 @@ class DashboardController extends Controller
             'name' => 'Gabriel',
             'email' => 'gabriel@email.com'
         ];
-        return Inertia::render('Dashboard/Index', $data);
+        return Inertia::render('Dashboard/index', $data);
     }
 }
