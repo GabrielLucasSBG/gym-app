@@ -25,9 +25,9 @@
                             <td>{{lead.name}}</td>
                             <td>{{lead.email}}</td>
                             <td>{{lead.phone}}</td>
-                            <td>{{lead.dob}}</td>
+                            <td>{{moment(lead.dob).format("DD/MM/YYYY")}}</td>
                             <td>{{lead.interested_package}}</td>
-                            <td>{{lead.created_at}}</td>
+                            <td>{{lead.created_at | formatDate}}</td>
                             <td>
                                 <inertia-link :href="$route('lead.view', {lead: lead})">
                                     >
@@ -44,10 +44,18 @@
 
 <script>
 import Layout from './../../Shared/Layout'
+import moment from 'moment'
 
 export default {
     components: {
         Layout
+    },
+    filters: {
+        formatDate: function(value) {
+            if (value) {
+                return moment(String(value)).format('DD/MM/YYYY hh:mm')
+            }
+        }
     },
     props: ['leads']
 }
