@@ -3,15 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class LeadController extends Controller
 {
+    private $validations;
+
+    public function __construct()
+    {
+        $this->validations = [
+            'name' => 'required',
+            'email' => 'required|email',
+            'dob' => 'required|date',
+            'phone' => 'required',
+            'interested_package' => 'sometimes'
+        ];
+    }
     public function index()
     {
-        $leads = Lead::query()->where('branch_id', 1)->orderBy('id')->get();
+        $leads = Lead::query()->latest()->get();
         return Inertia::render('Leads/Index', [
             'leads' => $leads
         ]);
@@ -24,25 +37,23 @@ class LeadController extends Controller
 
     public function store(Request $request)
     {
-        $postData = $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
-            'dob' => 'required|date',
-            'phone' => 'required',
-        ]);
+        $postData = $this->validate($request, $this->validations);
 
         $package = "";
         if($request->has('interested_package')){
             $package = $request->input('interested_package');
         }
 
+        $dob = Carbon::parse($postData['dob']);
+        $age = $dob->age;
+
         Lead::create([
             'name' => $postData['name'],
             'email' => $postData['email'],
-            'dob' => $postData['dob'],
+            'dob' => $dob,
             'phone' => $postData['phone'],
             'branch_id' => 1,
-            'age' => 10,
+            'age' => $age,
             'added_by' => Auth::user()->id,
             'interested_package' => $package
         ]);
@@ -52,8 +63,23 @@ class LeadController extends Controller
 
     public function view(Lead $lead)
     {
+        $lead->load(['reminders']);
+
         return Inertia::render('Leads/LeadView', [
             'lead-prop' => $lead
         ]);
+    }
+
+    public function update(Request $request)
+    {
+        $rules = $this->validations;
+        $rules['id'] = 'required|exists:leads';
+
+        $postData = $this->validate($request, $rules);
+        $postData['age'] = Carbon::parse($postData['dob'])->age;
+
+        $lead = Lead::where('id', $postData['id'])->update($postData);
+
+        return redirect()->route('lead.view', ['lead' => $postData['id']]);
     }
 }

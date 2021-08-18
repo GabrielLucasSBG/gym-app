@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lead extends Model
+class Reminder extends Model
 {
     use HasFactory;
     protected $guarded = [];
 
-    public function reminders()
+    public function getStatusAttribute($value)
     {
-        return $this->hasMany(Reminder::class)->latest();
+        return ucfirst($value);
     }
 }

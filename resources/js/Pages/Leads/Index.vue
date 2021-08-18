@@ -16,6 +16,7 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>DOB</th>
+                            <th>Age</th>
                             <th>Package</th>
                             <th>Added On</th>
                             <th></th>
@@ -26,6 +27,7 @@
                             <td>{{lead.email}}</td>
                             <td>{{lead.phone}}</td>
                             <td>{{moment(lead.dob).format("DD/MM/YYYY")}}</td>
+                            <td>{{lead.age}}</td>
                             <td>{{lead.interested_package}}</td>
                             <td>{{lead.created_at | formatDate}}</td>
                             <td>

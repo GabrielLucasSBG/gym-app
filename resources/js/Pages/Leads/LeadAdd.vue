@@ -12,8 +12,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" placeholder="Enter email" v-model="lead.email"
-                                       id="email" tabindex="2">
+                                <input type="text" class="form-control" placeholder="Enter email" v-model="lead.email" id="email" tabindex="2">
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone</label>
