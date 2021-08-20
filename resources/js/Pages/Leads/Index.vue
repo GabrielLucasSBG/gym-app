@@ -1,9 +1,10 @@
 <template>
     <Layout>
         <div class="container">
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-md-12">
-                    <h1>Leads</h1>
+                    <h1 class="float-left">Leads</h1>
+                    <inertia-link :href="$route('lead.add')" class="float-right btn btn-primary">Add Lead</inertia-link>
                 </div>
             </div>
 
@@ -23,7 +24,9 @@
                         </tr>
                         <tr v-for="lead in leads" :key="lead.id">
                             <td>{{lead.id}}</td>
-                            <td>{{lead.name}}</td>
+                            <td>
+                                <inertia-link :href="$route('lead.view', {lead: lead})">{{lead.name}}</inertia-link>
+                            </td>
                             <td>{{lead.email}}</td>
                             <td>{{lead.phone}}</td>
                             <td>{{moment(lead.dob).format("DD/MM/YYYY")}}</td>

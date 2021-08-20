@@ -20,6 +20,7 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownLeft">
                                 <inertia-link href="/leads/list" class="dropdown-item">Leads</inertia-link>
+                                <inertia-link href="/packages/list" class="dropdown-item">Packages</inertia-link>
                             </div>
                         </li>
                     </ul>
@@ -28,8 +29,8 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Birao
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{$page.props.auth.user.name}} <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

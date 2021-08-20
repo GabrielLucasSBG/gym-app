@@ -18,7 +18,13 @@
                     <div class="card">
                         <div class="card-header">Add a new reminder</div>
                         <div class="card-body">
-                            <reminder-form :main-reminder="reminder" @reminderSubmit="handleFormSubmit"></reminder-form>
+                            <reminder-form
+                                :main-reminder="reminder"
+                                :lead="lead"
+                                @reminderSubmit="handleFormSubmit"
+                                @addNewReminder="handleAddNewReminder"
+                            >
+                            </reminder-form>
                         </div>
                     </div>
                 </div>
@@ -44,6 +50,12 @@ export default {
     methods: {
         handleFormSubmit(postData) {
             console.log('postData', postData)
+        },
+        handleAddNewReminder(data) {
+            const postData = {
+                reminder_id: data.id
+            }
+            this.$inertia.post(route('reminder.update'), postData)
         }
     }
 }

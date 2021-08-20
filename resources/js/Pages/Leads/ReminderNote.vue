@@ -8,7 +8,7 @@
                         <span class="breadcrumb-sep">/</span>
                         <inertia-link :href="$route('lead.view', {lead: lead})">Leads Details</inertia-link>
                         <span class="breadcrumb-sep">/</span>
-                        Reminder Add
+                        Reminder Add Note
                     </h1>
                 </div>
             </div>
@@ -16,13 +16,17 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header">Add a new reminder</div>
+                        <div class="card-header">Add Note</div>
                         <div class="card-body">
-                            <reminder-form
-                                :lead="lead"
-                                :main-reminder="form"
-                                @reminderSubmit="handleSubmit">
-                            </reminder-form>
+                            <form @submit.prevent="handleAddNote">
+                                <div class="form-group">
+                                    <label for="note">Note</label>
+                                    <textarea name="note" id="note" class="form-control" v-model="note"></textarea>
+                                    <div v-if="$page.props.errors.note">{{ $page.props.errors.note[0] }}</div>
+                                </div>
+
+                                <button class="btn btn-success">Close</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -34,29 +38,26 @@
 
 <script>
 import Layout from './../../Shared/Layout'
-import ReminderForm from './ReminderForm'
-
 export default {
     props: {
-        lead: Object
-    },
-    components: {
-        Layout,
-        ReminderForm
+        lead: Object,
+        reminder: Object
     },
     data() {
         return {
-            form: this.$inertia.form({
-                reminder: '',
-                reminder_date: ''
-            }),
+            note: ''
         }
     },
+    components: {
+        Layout
+    },
     methods: {
-        handleSubmit(postData) {
-            postData.lead_id = this.lead.id
-
-            this.$inertia.post(route('reminder.save'), postData)
+        handleAddNote() {
+            const postData = {
+                reminder_id: this.reminder.id,
+                note: this.note
+            }
+            this.$inertia.post(route('reminder.close'), postData)
         }
     }
 }

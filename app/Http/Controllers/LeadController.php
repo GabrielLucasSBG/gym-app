@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
+use App\Models\Package;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,11 @@ class LeadController extends Controller
     }
     public function index()
     {
-        $leads = Lead::query()->latest()->get();
+        $leads = Lead::query()
+            ->latest()
+            ->where('active', 1)
+            ->get();
+
         return Inertia::render('Leads/Index', [
             'leads' => $leads
         ]);
@@ -65,8 +70,11 @@ class LeadController extends Controller
     {
         $lead->load(['reminders']);
 
+        $packages = Package::active()->get();
+
         return Inertia::render('Leads/LeadView', [
-            'lead-prop' => $lead
+            'lead-prop' => $lead,
+            'packages' => $packages
         ]);
     }
 

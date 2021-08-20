@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLeadsTable extends Migration
+class CreateSubscribersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,25 @@ class CreateLeadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('leads', function (Blueprint $table) {
+        Schema::create('subscribers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('lead_id');
+            $table->unsignedBigInteger('package_id');
+            $table->date('renewal_date');
+            $table->float('amount', 10, 2);
+
             $table->string('name');
             $table->string('email');
             $table->string('phone');
             $table->integer('age');
             $table->string('interested_package')->nullable();
             $table->date('dob');
+            $table->boolean('active')->default(1);
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('added_by');
-            $table->boolean('active')->default(1);
             $table->timestamps();
+
+            $table->index(['lead_id', 'package_id', 'renewal_date']);
         });
     }
 
@@ -35,6 +42,6 @@ class CreateLeadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('leads');
+        Schema::dropIfExists('subscribers');
     }
 }
